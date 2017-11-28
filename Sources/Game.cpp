@@ -16,6 +16,7 @@ Vector2 cannonPos;      //!< 砲台の位置
 Vector2 bulletPos;      //!< 弾の位置
 Rect    targetRect;     //!< ターゲットの矩形
 int     score;          //!< スコア
+int     speed = 100;
 
 
 
@@ -23,8 +24,8 @@ int     score;          //!< スコア
 void Start()
 {
     cloudPos = Vector2(-320, 100);
-    cannonPos = Vector2(-80, -150);
-    targetRect = Rect(80, -140, 40, 40);
+    cannonPos = Vector2(-270, -150);
+    targetRect = Rect(270, -140, 40, 40);
     bulletPos.x = -999;
     score = 0;
     }
@@ -39,7 +40,7 @@ void Update()
 
     // 弾の移動
     if (bulletPos.x > -999) {
-        bulletPos.x += 10 * Time::deltaTime;
+        bulletPos.x += 500 * Time::deltaTime;
 
         // ターゲットと弾の当たり判定
         Rect bulletRect(bulletPos, Vector2(32, 20));
@@ -47,6 +48,7 @@ void Update()
             score += 1;         // スコアの加算
             bulletPos.x = -999; // 弾を発射可能な状態に戻す
         }
+        if(bulletPos.x > 320) bulletPos.x = -999;
     }
 
     // 背景の描画
@@ -55,6 +57,8 @@ void Update()
 
     // 雲の描画
     DrawImage("cloud1.png", cloudPos);
+    cloudPos.x += 100 * time::deltaTime;
+    if(cloudePos.x > 320) cloudPos.x = -630;
 
     // 弾の描画
     if (bulletPos.x > -999) {
@@ -64,6 +68,16 @@ void Update()
     // 砲台の描画
     FillRect(Rect(cannonPos.x-10, -140, 20, 100), Color::blue);
     DrawImage("cannon.png", cannonPos);
+    
+    fillRect(Rect(cannon.x - 10,-140,20,100),Color::blue)
+        
+         cannonPos.y += speed * Time::deltaTime;
+    if (cannonPos.y >= -70){
+        speed *= -1;
+    }else if (cannonPos.y <= -150){
+        speed *= -1;
+    }
+
 
     // ターゲットの描画
     FillRect(targetRect, Color::red);
